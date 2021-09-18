@@ -63,12 +63,27 @@ To keep the assets up-to-date and avoid issues in future updates, we recommend a
 }
 ```
 
+The package will inject the published assets into the `styles` and `scripts` stacks, so you must add these to your layout:
+
+```blade
+<html>
+<head>
+    ...
+    @stack('styles')
+</head>
+<body>
+    ...
+    @stack('scripts')
+</body>
+</html>
+```
+
 ## Configuration
 
 You may publish the `content-tools` config file with the following command:
 
 ``` bash
-php artisan vendor:publish --provider="Eolica\LaravelContentTools\ContentToolsServiceProvider" --tag="config"
+php artisan vendor:publish --tag=content-tools:config
 ```
 
 This will create a `config/content-tools.php` file in your app that you can modify to set your configuration.

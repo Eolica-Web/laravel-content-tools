@@ -251,6 +251,40 @@ final class AppServiceProvider extends ServiceProvider
 
 Since our package uses the `bindIf` method that registers a binding if it hasn't already been registered, your custom permission handler will take precedence over our default implementation.
 
+### Combine multiple permission handlers
+
+Maybe the `Eolica\LaravelContentTools\PermissionHandler\AuthGuardCheckPermissionHandler` is good for you, but you want to perform an additional type of check so you made your own permission handler for that specific case and you don't want to copy and paste the built in permission handler code.
+
+For these scenarios this package ships with the `Eolica\LaravelContentTools\PermissionHandler\CompositePermissionHandler` that accepts a list of `PermissionHandler`.
+
+As always, you may bind this implementation in your `App\Providers\AppServiceProvider`:
+
+``` php
+namespace App\Providers;
+
+use App\ContentTools\PermissionHandler\YourOwnPermissionHandler;
+use Eolica\LaravelContentTools\PermissionHandler\AuthGuardCheckPermissionHandler;
+use Eolica\LaravelContentTools\PermissionHandler\CompositePermissionHandler;
+use Eolica\LaravelContentTools\PermissionHandler\PermissionHandler;
+
+final class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->bind(PermissionHandler::class, function ($app): PermissionHandler {
+            return new CompositePermissionHandler(
+                new AuthGuardCheckPermissionHandler($app->make('auth')),
+                new YourOwnPermissionHandler(),
+            );
+        });
+    }
+
+    ...
+}
+```
+
+Using this approach, instead of potentially creating a big permission handler that performs all kind of different checks, you could create small handlers for every one of them, making the code more flexible and reusable.
+
 ## Creating your own translation repository
 
 This package ships with the `Eolica\LaravelContentTools\Repository\FileTranslationRepository` that persists and loads the translations from php files inside the `storage/app/resources/lang` folder. If you want to persist your translations in another source (database, csv, yaml, etc...), you can create your own translation repository.

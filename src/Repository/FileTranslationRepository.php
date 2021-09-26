@@ -8,7 +8,6 @@ use Brick\VarExporter\VarExporter;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 final class FileTranslationRepository implements TranslationRepository
 {
@@ -44,23 +43,6 @@ final class FileTranslationRepository implements TranslationRepository
 
     private function getGroupPath(string $locale, string $group): string
     {
-        $basePath = $this->getGroupBasePath($locale, $group);
-
-        if (Str::contains($group, '/')){
-            $group = explode('/', $group)[1];
-        }
-
-        return $basePath . DIRECTORY_SEPARATOR . $group . '.php';
-    }
-
-    private function getGroupBasePath(string $locale, string $group): string
-    {
-        if (Str::contains($group, '/')){
-            [$namespace,] = explode('/', $group);
-
-            return $this->path . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . $namespace . DIRECTORY_SEPARATOR . $locale;
-        }
-
-        return $this->path . DIRECTORY_SEPARATOR . $locale;
+        return "{$this->path}/{$locale}/{$group}.php";
     }
 }

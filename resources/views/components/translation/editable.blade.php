@@ -2,7 +2,7 @@
 
 @if ($fixture !== null)
     <{{ $fixture }} data-editable data-fixture data-translation="{{ $key }}" {{ $attributes }}>
-        {{ __($key) }}
+        {!! __($key) !!}
     </{{ $fixture }}>
 @else
     <div data-editable data-translation="{{ $key }}" {{ $attributes }}>
@@ -55,7 +55,7 @@
 
                     var fragment = document.createRange().createContextualFragment(value)
                     if (fragment.firstChild.hasAttribute('data-fixture')) {
-                        value = fragment.firstChild.innerText
+                        value = fragment.firstChild.innerHTML
                     }
 
                     body.append('translations[' + translation + ']', value.trim())

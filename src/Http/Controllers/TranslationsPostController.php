@@ -30,7 +30,7 @@ final class TranslationsPostController
         foreach ($translations as $translation => $value) {
             [$group, $key] = explode('.', $translation, 2);
 
-            $this->saveTranslation->__invoke($locale, $group, $key, $value);
+            $this->saveTranslation->__invoke($locale, $group, $key, $value ?? '');
         }
 
         return new JsonResponse([], Response::HTTP_OK);

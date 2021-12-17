@@ -1,6 +1,6 @@
 @if ($fixture !== null)
     <{{ $fixture }} {{ $attributes }}>
-        {{ __($key) }}
+        {!! __($key) !!}
     </{{ $fixture }}>
 @else
     <div {{ $attributes }}>
